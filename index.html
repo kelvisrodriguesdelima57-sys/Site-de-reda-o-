@@ -17,8 +17,6 @@ button { cursor:pointer; margin-top:1rem; transition: background 0.3s; }
 #copiar:hover { background:#1976D2; }
 pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:1rem; border-radius:6px; margin-top:1rem; }
 #error { color:red; font-weight:bold; margin-top:1rem; }
-
-/* Responsivo para celular */
 @media (max-width: 600px) {
     main { margin:1rem; padding:0.8rem; }
     header { font-size: 1.2rem; padding:0.8rem; }
@@ -31,6 +29,7 @@ pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:
 <header>
   <h1>📚 Gerador de Redação</h1>
 </header>
+
 <main>
     <label for="tema">Tema:</label>
     <input id="tema" type="text" placeholder="Digite o tema">
@@ -46,14 +45,12 @@ pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:
     </select>
 
     <button id="gerar">Gerar Redação</button>
-
     <pre id="saida">Sua redação aparecerá aqui...</pre>
     <button id="copiar">📋 Copiar Redação</button>
-
     <div id="error"></div>
 </main>
 
-<section id="desenvolvedor" style="text-align:center; margin-bottom:50px;">
+<section style="text-align:center; margin-bottom:50px;">
   <h3>Desenvolvido por</h3>
   <p>Kelvis Rodrigues © 2025</p>
 </section>
@@ -65,7 +62,6 @@ pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:
 <script>
 const el = id => document.getElementById(id);
 
-// Botão gerar redação
 el('gerar').addEventListener('click', async () => {
   const tema = el('tema').value.trim();
   const pontos = el('pontos').value.trim().split('\n').filter(Boolean);
@@ -80,7 +76,8 @@ el('gerar').addEventListener('click', async () => {
   el('gerar').disabled = true;
 
   try {
-    const resp = await fetch("/gerar_redacao", {
+    // Chama o backend Vercel
+    const resp = await fetch("/api/gerar_redacao", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tema, pontos, tom })
@@ -91,7 +88,6 @@ el('gerar').addEventListener('click', async () => {
       el('saida').innerText = data.texto;
     } else {
       el('error').innerText = "Erro: " + (data.erro || "Falha inesperada");
-      if (data.detalhes) el('error').innerText += "\nDetalhes: " + data.detalhes;
     }
   } catch(e) {
     el('error').innerText = "Erro de conexão: " + e.message;
@@ -100,18 +96,15 @@ el('gerar').addEventListener('click', async () => {
   }
 });
 
-// Botão copiar redação
 el('copiar').addEventListener('click', () => {
-    const texto = el('saida').innerText;
-    if (!texto || texto === "Sua redação aparecerá aqui...") {
-        alert("Não há redação para copiar!");
-        return;
-    }
-    navigator.clipboard.writeText(texto).then(() => {
-        alert("Redação copiada com sucesso! 📋");
-    }).catch(err => {
-        alert("Falha ao copiar: " + err);
-    });
+  const texto = el('saida').innerText;
+  if (!texto || texto === "Sua redação aparecerá aqui...") {
+      alert("Não há redação para copiar!");
+      return;
+  }
+  navigator.clipboard.writeText(texto)
+      .then(() => alert("Redação copiada para a área de transferência!"))
+      .catch(err => alert("Erro ao copiar: " + err));
 });
 </script>
 </body>
