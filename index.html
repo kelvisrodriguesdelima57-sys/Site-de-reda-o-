@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RedaTech - Gerador de Redação</title>
+        <style>
+            body { font-family: Arial,sans-serif; margin:0; padding:0; background:#f7f7f7; }
+            header { background:#4CAF50; color:white; padding:1rem; text-align:center; }
+            nav ul { list-style:none; display:flex; justify-content:center; gap:1rem; padding:0; margin:0; }
+            nav a { color:white; text-decoration:none; }
+            main { max-width:800px; margin:2rem auto; padding:1rem; background:white; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+            label { display:block; margin-top:1rem; font-weight:bold; }
+            input, textarea, select, button { width:100%; margin-top:0.5rem; padding:0.7rem; border:1px solid #ddd; border-radius:6px; }
+            button { background:#4CAF50; color:white; border:none; cursor:pointer; margin-top:1rem; }
+            button:hover { background:#45a049; }
+            pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:1rem; border-radius:6px; margin-top:1rem; }
+        </style>
+    </head>
+    <body>
 
+        <header>
+              <h1>📚 RedaTech</h1>
+                <nav>
+                        <ul>
+                                  <li><a href="#gerador">Gerador</a></li>
+                                        <li><a href="#sobre">Sobre</a></li>
+                        </ul>
+                    </nav>
+                </header>
+
+                <main>
+                      <section id="gerador">
+                            <h2>Gerador de Redação</h2>
+                                <label for="tema">Tema:</label>
+                                    <input id="tema" type="text" placeholder="Digite o tema">
+                                        <label for="pontos">Pontos principais:</label>
+                                            <textarea id="pontos" placeholder="Ex: Educação, tecnologia, desigualdade"></textarea>
+                                                <label for="tom">Tom da redação:</label>
+                                                    <select id="tom">
+                                                              <option value="formal">Formal</option>
+                                                                    <option value="neutro">Neutro</option>
+                                                                          <option value="criativo">Criativo</option>
+                                                    </select>
+                                                        <button id="gerar">Gerar Redação</button>
+                                                            <pre id="saida">Sua redação aparecerá aqui...</pre>
+                                                </section>
+
+                                                  <section id="sobre" style="margin-top:2rem; text-align:center;">
+                                                        <h2>Sobre o RedaTech</h2>
+                                                            <p>Este site gera redações automáticas usando o Gemini API, com base nos critérios do ENEM.</p>
+                                                  </section>
+                                                </main>
+
+                                                <script>
+                                                    const el = id => document.getElementById(id);
+
+                                                    el('gerar').addEventListener('click', async () => {
+                                                          const tema = el('tema').value.trim();
+                                                            const pontos = el('pontos').value.trim().split('\n');
+                                                              const tom = el('tom').value;
+
+                                                                el('saida').innerText = "⏳ Gerando redação, aguarde...";
+
+                                                                  try {
+                                                                        const resp = await fetch("/gerar_redacao", {
+                                                                                  method: "POST",
+                                                                                        headers: { "Content-Type": "application/json" },
+                                                                                              body: JSON.stringify({ tema, pontos, tom })
+                                                                        });
+
+                                                                            const data = await resp.json();
+                                                                                if (data.texto) {
+                                                                                          el('saida').innerText = data.texto;
+                                                                                } else {
+                                                                                          el('saida').innerText = "Erro: " + (data.erro || "Falha inesperada");
+                                                                                }
+                                                                            } catch {
+                                                                                    el('saida').innerText = "Erro de conexão com o servidor.";
+                                                                            }
+                                                                        });
+                                                                    </script>
+                                                                </body>
+                                                                </html>
+                                                                            }
+                                                                                }
+                                                                                }
+                                                                        })
+                                                                  }
+                                                    })
