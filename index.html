@@ -10,8 +10,11 @@ header { background:#4CAF50; color:white; padding:1rem; text-align:center; }
 main { max-width:800px; margin:2rem auto; padding:1rem; background:white; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
 label { display:block; margin-top:1rem; font-weight:bold; }
 input, textarea, select, button { width:100%; margin-top:0.5rem; padding:0.7rem; border:1px solid #ddd; border-radius:6px; box-sizing:border-box; }
-button { background:#4CAF50; color:white; border:none; cursor:pointer; margin-top:1rem; }
-button:hover { background:#45a049; }
+button { cursor:pointer; margin-top:1rem; transition: background 0.3s; }
+#gerar { background:#4CAF50; color:white; border:none; }
+#gerar:hover { background:#45a049; }
+#copiar { background:#2196F3; color:white; border:none; }
+#copiar:hover { background:#1976D2; }
 pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:1rem; border-radius:6px; margin-top:1rem; }
 #error { color:red; font-weight:bold; margin-top:1rem; }
 
@@ -31,16 +34,22 @@ pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:
 <main>
     <label for="tema">Tema:</label>
     <input id="tema" type="text" placeholder="Digite o tema">
+
     <label for="pontos">Pontos principais:</label>
     <textarea id="pontos" placeholder="Ex: Educação, tecnologia, desigualdade"></textarea>
+
     <label for="tom">Tom da redação:</label>
     <select id="tom">
       <option value="formal">Formal</option>
       <option value="neutro">Neutro</option>
       <option value="criativo">Criativo</option>
     </select>
+
     <button id="gerar">Gerar Redação</button>
+
     <pre id="saida">Sua redação aparecerá aqui...</pre>
+    <button id="copiar">📋 Copiar Redação</button>
+
     <div id="error"></div>
 </main>
 
@@ -56,13 +65,19 @@ pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:
 <script>
 const el = id => document.getElementById(id);
 
+// Botão gerar redação
 el('gerar').addEventListener('click', async () => {
   const tema = el('tema').value.trim();
   const pontos = el('pontos').value.trim().split('\n').filter(Boolean);
   const tom = el('tom').value;
 
-  el('saida').innerText = "⏳ Gerando redação...";
   el('error').innerText = "";
+
+  if (!tema) return el('error').innerText = "Digite o tema da redação.";
+  if (pontos.length === 0) return el('error').innerText = "Informe pelo menos um ponto principal.";
+
+  el('saida').innerText = "⏳ Gerando redação...";
+  el('gerar').disabled = true;
 
   try {
     const resp = await fetch("/gerar_redacao", {
@@ -80,7 +95,23 @@ el('gerar').addEventListener('click', async () => {
     }
   } catch(e) {
     el('error').innerText = "Erro de conexão: " + e.message;
+  } finally {
+    el('gerar').disabled = false;
   }
+});
+
+// Botão copiar redação
+el('copiar').addEventListener('click', () => {
+    const texto = el('saida').innerText;
+    if (!texto || texto === "Sua redação aparecerá aqui...") {
+        alert("Não há redação para copiar!");
+        return;
+    }
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Redação copiada com sucesso! 📋");
+    }).catch(err => {
+        alert("Falha ao copiar: " + err);
+    });
 });
 </script>
 </body>
