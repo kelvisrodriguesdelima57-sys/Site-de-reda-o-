@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
-GEMINI_API_KEY = "AIzaSyBdRuoWqd7oHTF5F9C1kiN-zcWGalbN3aE"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 @app.route("/")
@@ -36,7 +37,7 @@ Inclua introdução, desenvolvimento e conclusão com proposta de intervenção.
 
     headers = {
         "Content-Type": "application/json",
-        "X-goog-api-key": GEMINI_API_KEY
+        "X-goog-api-key": GOOGLE_API_KEY
     }
 
     try:
@@ -64,4 +65,4 @@ Inclua introdução, desenvolvimento e conclusão com proposta de intervenção.
         }), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
