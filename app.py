@@ -10,45 +10,58 @@ API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-fl
 def index():
     return render_template("index.html")
 
-    @app.route("/gerar_redacao", methods=["POST"])
-    def gerar_redacao():
-        data = request.get_json()
-            tema = data.get("tema", "Tema não informado")
-                pontos = data.get("pontos", [])
-                    tom = data.get("tom", "formal")
+@app.route("/gerar_redacao", methods=["POST"])
+def gerar_redacao():
+    data = request.get_json()
+    tema = data.get("tema", "Tema não informado")
+    pontos = data.get("pontos", [])
+    tom = data.get("tom", "formal")
 
-                        prompt = f"""
-                        Escreva uma redação no estilo ENEM sobre o tema "{tema}".
-                        Pontos principais: {', '.join(pontos)}.
-                        Tom: {tom}.
-                        Inclua introdução, desenvolvimento e conclusão com proposta de intervenção.
-                        """
+    prompt = f"""
+Escreva uma redação no estilo ENEM sobre o tema "{tema}".
+Pontos principais: {', '.join(pontos)}.
+Tom: {tom}.
+Inclua introdução, desenvolvimento e conclusão com proposta de intervenção.
+"""
 
-                            payload = {
-                                    "contents": [
-                                                {
-                                                                "parts": [
-                                                                                    {"text": prompt}
-                                                                                                    ]
-                                                                                                                }
-                                                                                                                        ]
-                                                                                                                            }
+    payload = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": prompt}
+                ]
+            }
+        ]
+    }
 
-                                                                                                                                headers = {
-                                                                                                                                        "Content-Type": "application/json",
-                                                                                                                                                "X-goog-api-key": GEMINI_API_KEY
-                                                                                                                                                    }
+    headers = {
+        "Content-Type": "application/json",
+        "X-goog-api-key": GEMINI_API_KEY
+    }
 
-                                                                                                                                                        response = requests.post(API_URL, headers=headers, json=payload)
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload, timeout=15)
+    except Exception as e:
+        return jsonify({"erro": f"Falha na requisição: {str(e)}"}), 500
 
-                                                                                                                                                            if response.status_code == 200:
-                                                                                                                                                                    try:
-                                                                                                                                                                                text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
-                                                                                                                                                                                        except Exception:
-                                                                                                                                                                                                    text = "Erro ao processar resposta da API"
-                                                                                                                                                                                                            return jsonify({"texto": text})
-                                                                                                                                                                                                                else:
-                                                                                                                                                                                                                        return jsonify({"erro": response.text}), 500
+    # Debug completo
+    try:
+        resp_json = response.json()
+    except Exception:
+        resp_json = response.text
 
-                                                                                                                                                                                                                        if __name__ == "__main__":
-                                                                                                                                                                                                                            app.run(debug=True)
+    if response.status_code == 200:
+        try:
+            text = resp_json["candidates"][0]["content"]["parts"][0]["text"]
+            return jsonify({"texto": text})
+        except Exception:
+            return jsonify({"erro": "Não foi possível extrair o texto da resposta", "resposta_bruta": resp_json})
+    else:
+        return jsonify({
+            "erro": "Erro na API do Gemini",
+            "status_code": response.status_code,
+            "resposta_bruta": resp_json
+        }), 500
+
+if __name__ == "__main__":
+    app.run(debug=True)
