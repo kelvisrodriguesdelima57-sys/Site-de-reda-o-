@@ -1,72 +1,140 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Assistente de Redação</title>
-        <style>
-            /* Reset básico */
-                * {
-                      margin: 0;
-                            padding: 0;
-                                  box-sizing: border-box;
-                                      }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedaTech</title>
+<style>
+  /* Reset e cores */
+  :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#94a3b8;--glass: rgba(255,255,255,0.03);--white:#e6eef6}
+  *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth;}
+  body{font-family:Inter, sans-serif; background:var(--bg); color:var(--white);}/* Menu */ header{position:fixed;top:0;width:100%;background:var(--card);display:flex;justify-content:space-between;align-items:center;padding:12px 28px;z-index:1000;box-shadow:0 3px 10px rgba(0,0,0,0.5);} header h1{font-size:20px;color:var(--accent);cursor:pointer;} nav ul{list-style:none;display:flex;gap:20px;} nav ul li a{color:var(--white);text-decoration:none;font-weight:500;} nav ul li a:hover{color:var(--accent);}
 
-                                          body {
-                                                font-family: 'Segoe UI', Tahoma, sans-serif;
-                                                      background-color: #121212;
-                                                            color: #f5f5f5;
-                                                                  line-height: 1.6;
-                                                                        display: flex;
-                                                                              flex-direction: column;
-                                                                                    min-height: 100vh;
-                                                                                        }
+/* Layout principal */ .wrap{max-width:1100px;margin:100px auto 50px auto;padding:0 20px;display:grid;grid-template-columns:1fr 450px;gap:20px;} .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);} label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px;} input,textarea,select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:var(--white);resize:vertical;} textarea{min-height:120px;} button{background:var(--accent);color:#07202a;padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600;} button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);} .output{white-space:pre-wrap;line-height:1.6;min-height:260px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.02);} .avaliacao, .dicas{margin-top:20px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);font-size:13px;line-height:1.5;} .avaliacao h3, .dicas h3{margin-top:0;color:var(--accent);font-size:14px;} .avaliacao ul, .dicas ul{margin:6px 0 0 20px;padding:0;} footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px;}
 
-                                                                                            header {
-                                                                                                  text-align: center;
-                                                                                                        padding: 20px;
-                                                                                                              background: #1e1e1e;
-                                                                                                                    border-bottom: 2px solid #444;
-                                                                                                                        }
+/* Responsivo */ @media(max-width:900px){ .wrap{grid-template-columns:1fr;} } </style>
 
-                                                                                                                            header h1 {
-                                                                                                                                  font-size: 2rem;
-                                                                                                                                        margin-bottom: 8px;
-                                                                                                                                            }
+</head>
+<body>
+<header>
+  <h1 onclick="window.scrollTo({top:0, behavior:'smooth'})">RedaTech</h1>
+  <nav>
+    <ul>
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#gerador">Gerador</a></li>
+      <li><a href="#avaliacao">Avaliação</a></li>
+      <li><a href="#dicas">Dicas de Redação</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+    </ul>
+  </nav>
+</header><section id="inicio" style="margin-top:20px;text-align:center;">
+  <h2>Bem-vindo ao RedaTech</h2>
+  <p>Gerador de redações automático com avaliação ENEM e dicas práticas.</p>
+</section><section id="gerador" class="wrap">
+  <div class="card">
+    <label for="tema">Tema</label>
+    <input id="tema" type="text" placeholder="Digite o tema" value="Desafios da educação no Brasil"><div style="display:flex;gap:10px;margin-top:10px">
+  <div style="flex:1">
+    <label for="tipo">Tipo</label>
+    <select id="tipo">
+      <option value="dissertativa">Dissertativa-argumentativa</option>
+      <option value="expositivo">Expositiva</option>
+      <option value="narrativa">Narrativa</option>
+    </select>
+  </div>
+  <div style="width:120px">
+    <label for="tamanho">Tamanho</label>
+    <select id="tamanho">
+      <option value="breve">Breve</option>
+      <option value="medio" selected>Médio</option>
+      <option value="longo">Longo</option>
+    </select>
+  </div>
+</div>
 
-                                                                                                                                                main {
-                                                                                                                                                      display: flex;
-                                                                                                                                                            flex: 1;
-                                                                                                                                                                  padding: 20px;
-                                                                                                                                                                        gap: 20px;
-                                                                                                                                                                              flex-wrap: wrap;
-                                                                                                                                                                                  }
+<div style="margin-top:12px">
+  <label for="pontos">Pontos principais</label>
+  <textarea id="pontos">falta de investimentos
 
-                                                                                                                                                                                      .editor {
-                                                                                                                                                                                            flex: 2;
-                                                                                                                                                                                                  display: flex;
-                                                                                                                                                                                                        flex-direction: column;
-                                                                                                                                                                                                              min-width: 280px;
-                                                                                                                                                                                                                  }
+Formação de professores Desigualdade regional</textarea> </div>
 
-                                                                                                                                                                                                                      .editor h2 {
-                                                                                                                                                                                                                            margin-bottom: 10px;
-                                                                                                                                                                                                                                }
+<div style="margin-top:12px">
+  <label for="tom">Tom</label>
+  <select id="tom">
+    <option value="formal" selected>Formal</option>
+    <option value="neutro">Neutro</option>
+    <option value="opinativo">Opinativo</option>
+  </select>
+</div>
 
-                                                                                                                                                                                                                                    textarea {
-                                                                                                                                                                                                                                          flex: 1;
-                                                                                                                                                                                                                                                padding: 15px;
-                                                                                                                                                                                                                                                      border-radius: 10px;
-                                                                                                                                                                                                                                                            border: none;
-                                                                                                                                                                                                                                                                  resize: none;
-                                                                                                                                                                                                                                                                        font-size: 1rem;
-                                                                                                                                                                                                                                                                              background: #1c1c1c;
-                                                                                                                                                                                                                                                                                    color: #fff;
-                                                                                                                                                                                                                                                                                          margin-bottom: 15px;
-                                                                                                                                                                                                                                                                                                min-height: 200px;
-                                                                                                                                                                                                                                                                                                    }
+<div style="margin-top:12px">
+  <label for="exemplos">Exemplos/estatísticas</label>
+  <input id="exemplos" type="text">
+</div>
 
-                                                                                                                                                                                                                                                                                                        button {
+<div style="display:flex;gap:10px;margin-top:14px;align-items:center">
+  <button id="gerar">Gerar redação</button>
+  <button id="limpar" class="secondary">Limpar saída</button>
+  <button id="baixar" class="secondary">Baixar .txt</button>
+</div>
+
+  </div>  <div class="card">
+    <div id="saida" class="output"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button id="copiar" class="secondary">Copiar</button>
+      <button id="melhorar" class="secondary">Melhorar</button>
+    </div>
+  </div>
+</section><section id="avaliacao" class="wrap">
+  <div class="avaliacao">
+    <h3>Competências ENEM</h3>
+    <ul>
+      <li>Competência 1: Domínio da norma culta da língua portuguesa.</li>
+      <li>Competência 2: Compreensão da proposta de redação e aplicação de conceitos.</li>
+      <li>Competência 3: Seleção, organização e interpretação de informações e argumentos.</li>
+      <li>Competência 4: Coesão e argumentação.</li>
+      <li>Competência 5: Elaboração de proposta de intervenção relacionada ao tema.</li>
+    </ul>
+  </div>
+</section><section id="dicas" class="wrap">
+  <div class="dicas">
+    <h3>Dicas de Redação</h3>
+    <ul>
+      <li>Estrutura básica: Introdução, Desenvolvimento e Conclusão.</li>
+      <li>Evitar coloquialismos e gírias.</li>
+      <li>Usar conectivos para dar coesão.</li>
+      <li>Apresentar proposta de intervenção clara e detalhada.</li>
+      <li>Revisar gramática e ortografia antes de finalizar.</li>
+    </ul>
+  </div>
+</section><section id="sobre" class="wrap" style="text-align:center;margin-bottom:50px;">
+  <h3>Sobre o RedaTech</h3>
+  <p>Este site foi desenvolvido para auxiliar estudantes a gerar rascunhos de redação de forma rápida e prática, incorporando critérios de avaliação ENEM e dicas de escrita.</p>
+</section><footer>© 2025 RedaTech</footer><script>
+const el=id=>document.getElementById(id);
+function sentenceCase(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function buildIntro(tema,tom){const starters={formal:[`O tema "${tema}" revela aspectos complexos que merecem análise criteriosa.`],neutro:[`O tema ${tema} é importante e merece atenção.`],opinativo:[`A questão de ${tema} exige uma posição firme da sociedade.`]};return starters[tom]?starters[tom][0]:starters.neutro[0]+" Neste texto, discutirei o problema e possíveis soluções.";}
+function expandPoint(point,tom,ex){const tpls={formal:[`${point} constitui um elemento central do debate.`],neutro:[`${point} é um fator que influencia a situação atual.`],opinativo:[`É inegável que ${point} requer ação imediata.`]};let s=tpls[tom]?tpls[tom][0]:tpls.neutro[0];let exs=ex?` Exemplo: ${ex}.` : '';return s+` Para mitigar o problema, sugere-se políticas públicas e participação social.`+exs;}
+function buildConclusion(tema){return `Em suma, o enfrentamento de ${tema} depende de esforços coordenados entre governo e sociedade.`;}
+el('gerar').addEventListener('click',()=>{
+let tema=el('tema').value.trim()||'Tema não informado';
+let tipo=el('tipo').value;
+let tamanho=el('tamanho').value;
+let tom=el('tom').value;
+let exemplos=el('exemplos').value.trim();
+let pontosRaw=el('pontos').value.split('\n').map(s=>s.trim()).filter(Boolean);
+let pontos=pontosRaw.length?pontosRaw:['Apontamento 1','Apontamento 2'];
+let targetParas=tamanho==='breve'?2:tamanho==='medio'?3:4;
+let essay=buildIntro(tema,tom)+'\n\n';
+for(let i=0;i<targetParas;i++){let pnt=pontos[i]||pontos[i%pontos.length];let paragraph=expandPoint(pnt,tom,exemplos);essay+=sentenceCase(pnt)+': '+paragraph+'\n\n';}
+essay+=buildConclusion(tema);
+el('saida').innerText=essay;
+});
+el('copiar').addEventListener('click',()=>{let t=el('saida').innerText;if(t)navigator.clipboard.writeText(t);});
+el('limpar').addEventListener('click',()=>{el('saida').innerText='';});
+el('baixar').addEventListener('click',()=>{let t=el('saida').innerText;if(!t)return;const tema=el('tema').value.replace(/[^a-z0-9\- ]/ig,'').trim().slice(0,50)||'redacao';const blob=new Blob([t],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=tema+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
+el('melhorar').addEventListener('click',()=>{let t=el('saida').innerText;if(!t)return;el('saida').innerText=t+'\n\n(Revisar coesão e coerência)';});
+</script></body>
+</html>                                                                                                                                                                                                                                                                                                        button {
                                                                                                                                                                                                                                                                                                               padding: 12px;
                                                                                                                                                                                                                                                                                                                     background: #6200ea;
                                                                                                                                                                                                                                                                                                                           color: white;
