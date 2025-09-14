@@ -3,109 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerador de Redação</title>
+<title>Site em Manutenção</title>
 <style>
-body { font-family: Arial,sans-serif; margin:0; padding:0; background:#f7f7f7; }
-header { background:#4CAF50; color:white; padding:1rem; text-align:center; }
-main { max-width:800px; margin:2rem auto; padding:1rem; background:white; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-label { display:block; margin-top:1rem; font-weight:bold; }
-input, textarea, select, button { width:100%; margin-top:0.5rem; padding:0.7rem; border:1px solid #ddd; border-radius:6px; box-sizing:border-box; }
-button { cursor:pointer; margin-top:1rem; transition: background 0.3s; }
-#gerar { background:#4CAF50; color:white; border:none; }
-#gerar:hover { background:#45a049; }
-#copiar { background:#2196F3; color:white; border:none; }
-#copiar:hover { background:#1976D2; }
-pre { white-space: pre-wrap; word-wrap: break-word; background:#f1f1f1; padding:1rem; border-radius:6px; margin-top:1rem; }
-#error { color:red; font-weight:bold; margin-top:1rem; }
-@media (max-width: 600px) {
-    main { margin:1rem; padding:0.8rem; }
-    header { font-size: 1.2rem; padding:0.8rem; }
-    input, textarea, select, button { font-size: 1rem; padding:0.6rem; }
-    pre { font-size: 0.95rem; padding:0.8rem; }
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body, html {
+        height: 100%;
+        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+    }
+
+    .maintenance-interface {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        padding: 50px 40px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #444;
+    }
+
+    p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+    }
+
+    img {
+        width: 150px;
+        animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0); }
+    }
+
+    .footer {
+        margin-top: 25px;
+        font-size: 0.9em;
+        color: #666;
+    }
 </style>
 </head>
 <body>
-<header>
-  <h1>📚 Gerador de Redação</h1>
-</header>
-
-<main>
-    <label for="tema">Tema:</label>
-    <input id="tema" type="text" placeholder="Digite o tema">
-
-    <label for="pontos">Pontos principais:</label>
-    <textarea id="pontos" placeholder="Ex: Educação, tecnologia, desigualdade"></textarea>
-
-    <label for="tom">Tom da redação:</label>
-    <select id="tom">
-      <option value="formal">Formal</option>
-      <option value="neutro">Neutro</option>
-      <option value="criativo">Criativo</option>
-    </select>
-
-    <button id="gerar">Gerar Redação</button>
-    <pre id="saida">Sua redação aparecerá aqui...</pre>
-    <button id="copiar">📋 Copiar Redação</button>
-    <div id="error"></div>
-</main>
-
-<section style="text-align:center; margin-bottom:50px;">
-  <h3>Desenvolvido por</h3>
-  <p>Kelvis Rodrigues © 2025</p>
-</section>
-
-<footer style="text-align:center; margin-top:20px; color:#555; font-size:13px;">
-  &copy; 2025
-</footer>
-
-<script>
-const el = id => document.getElementById(id);
-
-el('gerar').addEventListener('click', async () => {
-  const tema = el('tema').value.trim();
-  const pontos = el('pontos').value.trim().split('\n').filter(Boolean);
-  const tom = el('tom').value;
-
-  el('error').innerText = "";
-
-  if (!tema) return el('error').innerText = "Digite o tema da redação.";
-  if (pontos.length === 0) return el('error').innerText = "Informe pelo menos um ponto principal.";
-
-  el('saida').innerText = "⏳ Gerando redação...";
-  el('gerar').disabled = true;
-
-  try {
-    // Chama o backend Vercel
-    const resp = await fetch("/api/gerar_redacao", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tema, pontos, tom })
-    });
-
-    const data = await resp.json();
-    if (data.texto) {
-      el('saida').innerText = data.texto;
-    } else {
-      el('error').innerText = "Erro: " + (data.erro || "Falha inesperada");
-    }
-  } catch(e) {
-    el('error').innerText = "Erro de conexão: " + e.message;
-  } finally {
-    el('gerar').disabled = false;
-  }
-});
-
-el('copiar').addEventListener('click', () => {
-  const texto = el('saida').innerText;
-  if (!texto || texto === "Sua redação aparecerá aqui...") {
-      alert("Não há redação para copiar!");
-      return;
-  }
-  navigator.clipboard.writeText(texto)
-      .then(() => alert("Redação copiada para a área de transferência!"))
-      .catch(err => alert("Erro ao copiar: " + err));
-});
-</script>
+    <div class="maintenance-interface">
+        <h1>Site em Manutenção</h1>
+        <p>Estamos trabalhando para melhorar sua experiência. Voltaremos em breve!</p>
+        <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyNWc3Z3hqMmh0MjJ5eTlpMnZzcXJ0ZWdrM21tYW90dXJhZGg4dXA1NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pRN57fPeBvuYE/giphy.gif" alt="Gato animado">
+        <div class="footer">© 2025 Seu Site. Todos os direitos reservados.</div>
+    </div>
 </body>
 </html>
