@@ -9,82 +9,23 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
     }
 
     body, html {
         height: 100%;
         width: 100%;
-        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
         overflow: hidden;
     }
 
-    .maintenance-interface {
-        position: relative;
-        width: 100%;
+    .gif-interface {
         height: 100%;
-        text-align: center;
-        color: #fff;
-    }
-
-    h1 {
-        font-size: 5em;
-        margin-bottom: 20px;
-        text-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-        position: absolute;
-        top: 10%;
         width: 100%;
-    }
-
-    p {
-        font-size: 2em;
-        text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-        position: absolute;
-        top: 20%;
-        width: 100%;
-    }
-
-    .gif-container {
-        position: absolute;
-        top: 40%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .gif-container img {
-        width: 400px; /* GIF maior */
-        max-width: 80%;
-        animation: float 2s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0% { transform: translate(-50%, -50%) translateY(0); }
-        50% { transform: translate(-50%, -50%) translateY(-30px); }
-        100% { transform: translate(-50%, -50%) translateY(0); }
-    }
-
-    .footer {
-        position: absolute;
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
-        font-size: 1.2em;
-        color: #f0f0f0;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        background: url('https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyZHptd2szbmxwdjYxZ28xZXNpbnB3N3FiNnpqMzUwemdlZXNtbjFpcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u18KbOWs65HFK/giphy.gif') no-repeat center center;
+        background-size: cover;
     }
 </style>
 </head>
 <body>
-    <div class="maintenance-interface">
-        <h1>Site em Manutenção</h1>
-        <p>Estamos trabalhando para melhorar sua experiência. Voltaremos em breve!</p>
-        <div class="gif-container">
-            <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyZHptd2szbmxwdjYxZ28xZXNpbnB3N3FiNnpqMzUwemdlZXNtbjFpcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u18KbOWs65HFK/giphy.gif" alt="Gato animado">
-        </div>
-        <div class="footer">© 2025 Seu Site. Todos os direitos reservados.</div>
-    </div>
+    <div class="gif-interface"></div>
 </body>
 </html>
